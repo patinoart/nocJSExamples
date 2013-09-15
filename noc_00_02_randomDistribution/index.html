@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Random Distribution</title>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+	<div id="container">
+		<div id="nav-box">
+			<h4><a href="http://juanpablopatino.com">Back to Site</a></h4>
+		</div><!-- #nav-box -->
+		<header>
+			<h2><strong>CanvasJS: </strong>Random Distribution</h2>
+			<h3><a href="http://natureofcode.com/">from Nature of Code by Daniel Shiffman</a></h3>
+		</header>
+		<canvas id="canvasElement" width="640" height="240">Your browser does not support the Canvas element</canvas>
+	</div><!-- #container -->
+	
+	<script type="text/javascript">
+	
+		var canvas = document.getElementById('canvasElement');
+		var context = canvas.getContext("2d");
+		var width = canvas.width;
+		var height = canvas.height;
+		
+		// An array to keep track of how often 
+		// random numbers are picked
+		var randomCounts = [];
+		randomCounts[20] = true;
+				
+		function draw() {
+			
+			// pick a random number and increase the count
+			var index = Math.floor((Math.random()*randomCounts.length));
+			//console.log(index);
+			
+			randomCounts[index]++;
+			
+			context.strokeStyle = "#000000";
+			context.stroke();
+			
+			var w = width/randomCounts.length;
+			//console.log(w);
+			
+			context.fillStyle = "#898989";
+			// graphing the results
+			for (var x = 0; x < randomCounts.length; x++) {
+				context.rect(x * w, height - randomCounts[x], w - 1, randomCounts[x]);
+				//console.log(x);
+			}
+			context.fill();
+			
+		}
+		
+		setInterval(draw, 33);
+	
+	</script>
+</body>
+</html>
+	
