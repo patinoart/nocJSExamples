@@ -55,6 +55,10 @@
 				//console.log(index);
 				bars[index].h++;
 				
+				if (bars[i].h > height) {
+					bars[i].h = 0;
+				}
+				
 				context.fillStyle = "#898989";
 				context.beginPath();
 				context.rect(bars[i].x, bars[i].y - bars[i].h, bars[i].w, bars[i].h);
