@@ -22,41 +22,48 @@
 	<script type="text/javascript">
 	
 		var canvas = document.getElementById('canvasElement');
-		var context = canvas.getContext("2d");
 		var width = canvas.width;
 		var height = canvas.height;
 		
-		// An array to keep track of how often 
-		// random numbers are picked
-		var randomCounts = [];
-		randomCounts[20] = true;
-				
-		function draw() {
-			
-			// pick a random number and increase the count
-			var index = Math.floor((Math.random()*randomCounts.length));
-			//console.log(index);
-			
-			randomCounts[index]++;
-			
-			context.strokeStyle = "#000000";
-			context.stroke();
-			
-			var w = width/randomCounts.length;
-			//console.log(w);
-			
-			context.fillStyle = "#898989";
-			// graphing the results
-			for (var x = 0; x < randomCounts.length; x++) {
-				context.rect(x * w, height - randomCounts[x], w - 1, randomCounts[x]);
-				//console.log(x);
-			}
-			context.fill();
-			
+		if (canvas && canvas.getContext) {
+			var context = canvas.getContext("2d");
+			setup();
 		}
 		
-		setInterval(draw, 33);
-	
+		var bars = [];
+		for (var i = 0; i < 20; i += 1) {
+			bars.push({
+				x: i * (width/20),
+				y: height,
+				w: (width/20)-1,
+				h: 0
+			});
+		}
+		
+		function setup() {
+			setInterval(draw, 33);
+			context.beginPath();
+		}
+		
+		function draw() {
+			
+			context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+			
+			for (var i = 0; i < bars.length; i += 1) {
+				
+				var index = Math.floor((Math.random()*bars.length))
+				//console.log(index);
+				bars[index].h++;
+				
+				context.fillStyle = "#898989";
+				context.beginPath();
+				context.rect(bars[i].x, bars[i].y - bars[i].h, bars[i].w, bars[i].h);
+				context.closePath();
+				context.fill();
+			}
+			
+		}
+			
 	</script>
 </body>
 </html>

@@ -24,6 +24,7 @@
 		var canvas = document.getElementById('canvasElement');
 		var width = canvas.width;
 		var height = canvas.height;
+		var mouse = { x: 0, y: 0 };
 		
 		var walker = {
 			x: width/2,
@@ -34,8 +35,47 @@
 				var stepx = Math.floor((Math.random()*3)-1);
 				var stepy = Math.floor((Math.random()*3)-1);
 					
-				walker.x += stepx;
-				walker.y += stepy;
+				this.x += stepx;
+				this.y += stepy;
+			},
+			stepRight: function() {
+				var r = Math.random();
+				
+				if (r < 0.4) {
+					this.x++;
+				} else if (r < 0.6) {
+					this.x--;
+				} else if (r < 0.8) {
+					this.y++;
+				} else {
+					this.y--;
+				}
+			},
+			stepToMouse: function() {
+				var r = Math.random();
+				
+				if (r < 0.5) {
+					// get the mouse information
+					if (this.x < mouse.x) {
+						this.x++;
+					} else {
+						this.x--;
+					}
+					if (this.y < mouse.y) {
+						this.y++;
+					} else {
+						this.y--;
+					}
+					
+				} else if (r < 0.6) {
+					this.x++;
+				} else if (r < 0.7) {
+					this.x--;
+				} else if (r < 0.8) {
+					this.y++;
+				} else {
+					this.y--;
+				}
 			}				
 		};
 		
@@ -45,6 +85,9 @@
 		}
 		
 		function Initialize() {
+			
+			canvas.addEventListener('mousemove', MouseMove, false);
+		
 			setInterval(TimeUpdate, 20);
 			context.beginPath();
 		}
@@ -60,9 +103,17 @@
 			context.fill();
 			
 			
-			walker.walkerMove();
+			//walker.walkerMove();
 			//console.log("X= "+walker.x+", Y= "+walker.y);
 			
+			walker.stepToMouse();
+			
+		}
+		
+		function MouseMove(e) {
+			mouse.x = e.layerX;
+			mouse.y = e.layerY;
+			console.log(mouse.x + ", " + mouse.y);
 		}
 	
 	</script>
