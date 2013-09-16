@@ -1,0 +1,144 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Gaussian Distribution</title>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+	<div id="container">
+		<div id="nav-box">
+			<h4><a href="http://juanpablopatino.com">Back to Site</a></h4>
+		</div><!-- #nav-box -->
+		<header>
+			<h2><strong>CanvasJS: </strong>Gaussian Distribution</h2>
+			<h3><a href="http://natureofcode.com/">from Nature of Code by Daniel Shiffman</a></h3>
+		</header>
+		<canvas id="canvasElement" width="640" height="360">Your browser does not support the Canvas element</canvas>
+	</div><!-- #container -->
+	
+	<script type="text/javascript">
+	
+		var canvas = document.getElementById('canvasElement');
+		var width = canvas.width;
+		var height = canvas.height;
+		
+		if (canvas && canvas.getContext) {
+			var context = canvas.getContext("2d");
+			setup();
+		}
+		
+		var walker = {
+			x: width/2,
+			y: height/2,
+			size: 4,
+			color: "rgba(255, 255, 255, 0.05",
+			checkBounds: function() {
+				if (this.x > width) {
+					this.x = width;
+					this.x--;
+				} else if (this.x < 0) {
+					this.x = 0;
+					this.x++;
+				} else if (this.y > height) {
+					this.y = height;
+					this.y--;
+				} else if (this.y < 0) {
+					this.y = 0;
+					this.y++;
+				}
+			},
+			walkerMove: function() {
+				var stepx = Math.floor((Math.random()*3)-1);
+				var stepy = Math.floor((Math.random()*3)-1);
+					
+				this.x += stepx;
+				this.y += stepy;
+			},
+			stepRight: function() {
+				var r = Math.random();
+				
+				if (r < 0.4) {
+					this.x++;
+				} else if (r < 0.6) {
+					this.x--;
+				} else if (r < 0.8) {
+					this.y++;
+				} else {
+					this.y--;
+				}
+			},
+			stepToMouse: function() {
+				var r = Math.random();
+				
+				if (r < 0.5) {
+					// get the mouse information
+					if (this.x < mouse.x) {
+						this.x++;
+					} else {
+						this.x--;
+					}
+					if (this.y < mouse.y) {
+						this.y++;
+					} else {
+						this.y--;
+					}
+					
+				} else if (r < 0.6) {
+					this.x++;
+				} else if (r < 0.7) {
+					this.x--;
+				} else if (r < 0.8) {
+					this.y++;
+				} else {
+					this.y--;
+				}
+			}				
+		};
+		
+		function setup() {
+			setInterval(draw, 33);
+			context.beginPath();
+		}
+		
+		var r, theta, theta_vel;
+		r = 16;
+		theta = 0;
+		theta_vel = 1;
+		
+		function draw() {
+			
+			//context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+			
+			walker.checkBounds();
+			walker.walkerMove();
+			//context.translate(walker.x, walker.y);
+			console.log("WX: " + walker.x + ", WY: " + walker.y);
+			
+			var num = (Math.random()*2)-1;
+			var sdx = r * Math.cos(theta);
+			var sdy = r * Math.sin(theta);
+			var meanx = walker.x;
+			var meany = walker.y;
+			var x = sdx * num + meanx;
+			var y = sdy * num + meany;
+			
+			context.fillStyle = walker.color;
+			context.beginPath();
+			context.arc(x, y, walker.size, 0, 2*Math.PI,true);
+			context.closePath();
+			context.fill();
+			
+			if (theta > 360) {
+				theta = 0;
+			}
+			theta += theta_vel;
+				
+		}
+			
+	</script>
+</body>
+</html>
+	
