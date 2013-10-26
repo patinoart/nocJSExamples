@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Perlin Noise Walker</title>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+	<div id="container">
+		<div id="nav-box">
+			<h4><a href="http://juanpablopatino.com">Back to Site</a></h4>
+		</div><!-- #nav-box -->
+		<header>
+			<h2><strong>CanvasJS: </strong>Perlin Noise Walker</h2>
+			<h3><a href="http://natureofcode.com/">from Nature of Code by Daniel Shiffman</a></h3>
+		</header>
+		<canvas id="canvasElement" width="400" height="400">Your browser does not support the Canvas element</canvas>
+	</div><!-- #container -->
+	
+	<script type="text/javascript" src="perlin-noise-classical.js"></script>
+	<script type="text/javascript">
+	
+		var canvas = document.getElementById('canvasElement');
+		var width = canvas.width;
+		var height = canvas.height;
+		
+		if (canvas && canvas.getContext) {
+			var context = canvas.getContext("2d");
+			setup();
+		}
+		
+		function map_range(value, low1, high1, low2, high2) {
+		    return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+		}
+		
+		var walker = {
+			x: width/2,
+			y: height/2,
+			tx: 0,
+			ty: 10000,
+			step: function(){
+				x = map_range(ClassicalNoise(this.tx), 0, 1, 0, canvas.width);
+				y = map_range(ClassicalNoise(this.ty), 0, 1, 0, canvas.height);
+				this.tx += 0.01;
+				this.ty += 0.01;
+			}			
+		};
+		
+		function setup() {
+			setInterval(draw, 33);
+			context.beginPath();
+		}
+		
+		function draw() {
+			
+			context.fillStyle = "rgba(127, 127, 127, 0.1)";
+			context.rect(0, 0, canvas.width, canvas.height);
+			
+			console.log("WX: " + walker.x + ", WY: " + walker.y);
+			
+			walker.step();
+			
+			context.fillStyle = "#FFFFFF";
+			context.beginPath();
+			context.arc(walker.x, walker.y, 16, 0, 2*Math.PI,true);
+			context.closePath();
+			context.fill();
+		}
+			
+	</script>
+</body>
+</html>
+	
